@@ -26,35 +26,17 @@ namespace TimeReportApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CustomerProject",
-                columns: table => new
-                {
-                    CustomersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProjectsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerProject", x => new { x.CustomersId, x.ProjectsId });
                     table.ForeignKey(
-                        name: "FK_CustomerProject_Customers_CustomersId",
-                        column: x => x.CustomersId,
+                        name: "FK_Projects_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CustomerProject_Projects_ProjectsId",
-                        column: x => x.ProjectsId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -62,7 +44,7 @@ namespace TimeReportApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Minutes = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -84,9 +66,9 @@ namespace TimeReportApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerProject_ProjectsId",
-                table: "CustomerProject",
-                column: "ProjectsId");
+                name: "IX_Projects_CustomerId",
+                table: "Projects",
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TimeReports_CustomerId",
@@ -102,16 +84,13 @@ namespace TimeReportApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CustomerProject");
-
-            migrationBuilder.DropTable(
                 name: "TimeReports");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "Projects");
+                name: "Customers");
         }
     }
 }

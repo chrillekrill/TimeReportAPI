@@ -22,21 +22,6 @@ namespace TimeReportApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CustomerProject", b =>
-                {
-                    b.Property<Guid>("CustomersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CustomersId", "ProjectsId");
-
-                    b.HasIndex("ProjectsId");
-
-                    b.ToTable("CustomerProject");
-                });
-
             modelBuilder.Entity("TimeReportApi.Data.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -59,12 +44,17 @@ namespace TimeReportApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Projects");
                 });
@@ -78,6 +68,9 @@ namespace TimeReportApi.Migrations
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -89,9 +82,6 @@ namespace TimeReportApi.Migrations
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
@@ -101,40 +91,34 @@ namespace TimeReportApi.Migrations
                     b.ToTable("TimeReports");
                 });
 
-            modelBuilder.Entity("CustomerProject", b =>
+            modelBuilder.Entity("TimeReportApi.Data.Project", b =>
                 {
                     b.HasOne("TimeReportApi.Data.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TimeReportApi.Data.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Projects")
+                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("TimeReportApi.Data.TimeReport", b =>
                 {
                     b.HasOne("TimeReportApi.Data.Customer", null)
-                        .WithMany("timeReports")
+                        .WithMany("TimeReports")
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("TimeReportApi.Data.Project", null)
-                        .WithMany("timeReports")
+                        .WithMany("TimeReports")
                         .HasForeignKey("ProjectId");
                 });
 
             modelBuilder.Entity("TimeReportApi.Data.Customer", b =>
                 {
-                    b.Navigation("timeReports");
+                    b.Navigation("Projects");
+
+                    b.Navigation("TimeReports");
                 });
 
             modelBuilder.Entity("TimeReportApi.Data.Project", b =>
                 {
-                    b.Navigation("timeReports");
+                    b.Navigation("TimeReports");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,6 @@ namespace TimeReportApi.Data
         public Guid Id { get; set; }
         [MaxLength(100)]
         public string Name { get; set; }
-        public List<TimeReport> timeReports { get; set; }
-        public List<Customer> Customers { get; set; }
+        public List<TimeReport> TimeReports { get; set; }
     }
 }
