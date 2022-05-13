@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TimeReportApi.Data;
-using TimeReportApi.DTO;
+using TimeReportApi.DTO.CustomerDTOs;
 
 namespace TimeReportApi.Controllers
 {
@@ -9,80 +10,57 @@ namespace TimeReportApi.Controllers
     [Route("[controller]")]
     public class CustomerController : Controller
     {
-        private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
         public CustomerController(ApplicationDbContext context, IMapper mapper)
         {
-            this.context = context;
-            this.mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok(mapper.Map<List<CustomerDTO>>(context.Customers));
+            return Ok(_mapper.Map<List<CustomerDto>>(_context.Customers.Include(cus => cus.Projects)));
         }
         [HttpPost]
         [Route("create")]
-        public IActionResult Create(CreateCustomerDTO customer)
+        public IActionResult Create(CreateCustomerDto customer)
         {
-            var newCustomer = mapper.Map<Customer>(customer);
+            var newCustomer = _mapper.Map<Customer>(customer);
 
-            newCustomer.Id = new Guid();
+            _context.Customers.Add(newCustomer);
 
-            context.Customers.Add(newCustomer);
+            _context.SaveChanges();
 
-            context.SaveChanges();
+            var customerDto = _mapper.Map<CustomerDto>(newCustomer);
 
-            var customerDTO = mapper.Map<CustomerDTO>(newCustomer);
-
-            return CreatedAtAction(nameof(GetOne), new { id = newCustomer.Id }, customerDTO);
+            return CreatedAtAction(nameof(GetOne), new { id = customerDto.Id }, customerDto);
         }
 
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetOne(string id)
         {
-            Guid guidId;
-            try
-            {
-                guidId = Guid.Parse(id);
-            }
-            catch
-            {
-                return NotFound("No customer found");
-            }
-
-            var customer = context.Customers.FirstOrDefault(cust => cust.Id == guidId);
+            var customer = _context.Customers.Include(cus => cus.Projects).FirstOrDefault(cust => cust.Id.ToString() == id);
             if(customer == null) return NotFound("No customer found");
 
-            var customerToReturn = mapper.Map<CustomerDTO>(customer);
+            var customerToReturn = _mapper.Map<CustomerDto>(customer);
 
             return Ok(customerToReturn);
         }
         [HttpPut]
         [Route("edit/{id}")]
-        public IActionResult EditCustomer(string id, EditCustomerDTO editedCustomer)
+        public IActionResult EditCustomer(string id, EditCustomerDto editedCustomer)
         {
-
-            Guid guidId;
-            try
-            {
-               guidId = Guid.Parse(id);
-            }
-            catch
-            {
-               return NotFound("No customer found");
-            }
-
-            var customer = context.Customers.FirstOrDefault(cust => cust.Id == guidId);
+            var customer = _context.Customers.FirstOrDefault(cust => cust.Id.ToString() == id);
             if (customer == null) return NotFound("No customer found");
 
-            mapper.Map(editedCustomer, customer);
+            _mapper.Map(editedCustomer, customer);
 
-            context.SaveChanges();
+            _context.SaveChanges();
 
-            var customerToReturn = mapper.Map<CustomerDTO>(customer);
+            var customerToReturn = _mapper.Map<CustomerDto>(customer);
 
             return Ok(customerToReturn);
         }
@@ -90,26 +68,15 @@ namespace TimeReportApi.Controllers
         [Route("delete/{id}")]
         public IActionResult DeleteCustomer(string id)
         {
-
-            Guid guidId;
-            try
-            {
-                guidId = Guid.Parse(id);
-            } 
-            catch
-            {
-                return NotFound("No customer found");
-            }
-
-            var customer = context.Customers.FirstOrDefault(cust => cust.Id == guidId);
+            var customer = _context.Customers.FirstOrDefault(cust => cust.Id.ToString() == id);
 
             if(customer == null) return NotFound("No customer found");
 
-            context.Customers.Remove(customer);
+            _context.Customers.Remove(customer);
 
-            context.SaveChanges();
+            _context.SaveChanges();
 
-            return Ok($"Customer with the Id: {guidId} was deleted");
+            return Ok($"Customer with the Id: {id} was deleted");
         }
     }
 }

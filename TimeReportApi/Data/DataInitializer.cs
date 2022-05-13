@@ -4,15 +4,15 @@ namespace TimeReportApi.Data
 {
     public class DataInitializer
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
 
         public DataInitializer(ApplicationDbContext context)
         {
-            this.context = context;
+            _context = context;
         }
         public void SeedData()
         {
-            context.Database.Migrate();
+            _context.Database.Migrate();
         }
     }
 }

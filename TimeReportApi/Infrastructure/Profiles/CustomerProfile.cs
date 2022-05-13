@@ -1,4 +1,4 @@
-﻿using TimeReportApi.DTO;
+﻿using TimeReportApi.DTO.CustomerDTOs;
 using AutoMapper;
 using TimeReportApi.Data;
 
@@ -8,13 +8,13 @@ namespace TimeReportApi.Infrastructure.Profiles
     {
         public CustomerProfile()
         {
-            CreateMap<Customer, CustomerDTO>()
+            CreateMap<Customer, CustomerDto>()
                 .ReverseMap();
-            CreateMap<Customer, CreateCustomerDTO>()
+            CreateMap<Customer, CreateCustomerDto>()
                 .ReverseMap();
-            CreateMap<Customer, EditCustomerDTO>()
+            CreateMap<Customer, EditCustomerDto>()
                 .ReverseMap();
-            CreateMap<Customer, List<CustomerDTO>>()
+            CreateMap<Customer, List<CustomerDto>>()
                 .ReverseMap();
         }
     }
