@@ -8,7 +8,7 @@ namespace TimeReportApi.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return Ok();
         }
     }
 }
