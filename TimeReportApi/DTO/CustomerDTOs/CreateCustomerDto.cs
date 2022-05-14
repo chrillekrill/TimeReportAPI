@@ -1,7 +1,5 @@
-﻿namespace TimeReportApi.DTO.CustomerDTOs
+﻿namespace TimeReportApi.DTO.CustomerDTOs;
+public class CreateCustomerDto
 {
-    public class CreateCustomerDto
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

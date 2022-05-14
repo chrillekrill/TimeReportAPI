@@ -13,9 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<DataInitializer>();
-builder.Services.AddAutoMapper(typeof(CustomerProfile));
-builder.Services.AddAutoMapper(typeof(ProjectProfile));
-
+builder.Services.AddAutoMapper(typeof(CustomerProfile),typeof(ProjectProfile),typeof(TimeReportProfile));
 
 var app = builder.Build();
 
