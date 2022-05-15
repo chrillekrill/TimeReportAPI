@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TimeReportApi.Data;
@@ -7,6 +8,7 @@ using TimeReportApi.DTO.ProjectDTOs;
 namespace TimeReportApi.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class ProjectController : Controller
 {
