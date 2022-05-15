@@ -62,3 +62,4 @@ C:\Users\Henri\source\repos\TimeReportApi\TimeReportApi\obj\Debug\net6.0\refint\
 C:\Users\Henri\source\repos\TimeReportApi\TimeReportApi\obj\Debug\net6.0\TimeReportApi.pdb
 C:\Users\Henri\source\repos\TimeReportApi\TimeReportApi\obj\Debug\net6.0\TimeReportApi.genruntimeconfig.cache
 C:\Users\Henri\source\repos\TimeReportApi\TimeReportApi\obj\Debug\net6.0\ref\TimeReportApi.dll
+C:\Users\Henri\source\repos\TimeReportApi\TimeReportApi\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

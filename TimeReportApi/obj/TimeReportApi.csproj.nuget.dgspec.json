@@ -54,13 +54,13 @@
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[7.0.0-preview.4.22229.2, )"
+              "version": "[6.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[7.0.0-preview.4.22229.2, )"
+              "version": "[6.0.5, )"
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
