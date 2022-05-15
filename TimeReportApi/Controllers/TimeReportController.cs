@@ -27,7 +27,6 @@ public class TimeReportController : Controller
         return Ok(_mapper.Map<List<TimeReportDto>>(_context.TimeReports));
     }
     [HttpPost]
-    [Route("create")]
     public IActionResult Create(CreateTimeReportDto timeReport)
     {
         var newTimeReport = _mapper.Map<TimeReport>(timeReport);
@@ -72,7 +71,7 @@ public class TimeReportController : Controller
     }
     
     [HttpPut]
-    [Route("edit/{id}")]
+    [Route("{id}")]
     public IActionResult EditTimeReport(string id, EditTimeReportDto editedTimeReport)
     {
         var timeReport = _context.TimeReports.FirstOrDefault(t => t.Id.ToString() == id);
@@ -88,7 +87,7 @@ public class TimeReportController : Controller
     }
     
     [HttpDelete]
-    [Route("delete/{id}")]
+    [Route("{id}")]
     public IActionResult DeleteTimeReport(string id)
     {
         var timeReport = _context.TimeReports.FirstOrDefault(t => t.Id.ToString() == id);

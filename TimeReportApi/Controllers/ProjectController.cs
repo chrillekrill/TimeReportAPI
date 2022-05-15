@@ -27,7 +27,6 @@ public class ProjectController : Controller
     }
 
     [HttpPost]
-    [Route("create")]
     public IActionResult Create(CreateProjectDto project)
     {
         var newProject = _mapper.Map<Project>(project);
@@ -57,7 +56,7 @@ public class ProjectController : Controller
     }
         
     [HttpPut]
-    [Route("edit/{id}")]
+    [Route("{id}")]
     public IActionResult EditProject(string id, EditProjectDto editedProject)
     {
         var project = _context.Projects.FirstOrDefault(proj => proj.Id.ToString() == id);
@@ -72,7 +71,7 @@ public class ProjectController : Controller
         return Ok(projectToReturn);
     }
     [HttpDelete]
-    [Route("delete/{id}")]
+    [Route("{id}")]
     public IActionResult DeleteProject(string id)
     {
         var project = _context.Projects.FirstOrDefault(proj => proj.Id.ToString() == id);

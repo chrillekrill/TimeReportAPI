@@ -8,8 +8,8 @@ using TimeReportApi.DTO.CustomerDTOs;
 namespace TimeReportApi.Controllers;
 
 [ApiController]
-[Authorize]
 [Route("[controller]")]
+[Authorize]
 public class CustomerController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -26,7 +26,7 @@ public class CustomerController : Controller
         return Ok(_mapper.Map<List<CustomerDto>>(_context.Customers.Include(cus => cus.Projects).ThenInclude(c => c.TimeReports)));
     }
     [HttpPost]
-    [Route("create")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create(CreateCustomerDto customer)
     {
         var newCustomer = _mapper.Map<Customer>(customer);
@@ -52,7 +52,8 @@ public class CustomerController : Controller
         return Ok(customerToReturn);
     }
     [HttpPut]
-    [Route("edit/{id}")]
+    [Route("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult EditCustomer(string id, EditCustomerDto editedCustomer)
     {
         var customer = _context.Customers.FirstOrDefault(cust => cust.Id.ToString() == id);
@@ -67,7 +68,8 @@ public class CustomerController : Controller
         return Ok(customerToReturn);
     }
     [HttpDelete]
-    [Route("delete/{id}")]
+    [Route("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult DeleteCustomer(string id)
     {
         var customer = _context.Customers.FirstOrDefault(cust => cust.Id.ToString() == id);

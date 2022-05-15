@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pyF8rHlF74GrciCwNI2afZ0Rekk7vZIr5ze6TcwHPvp4UzapakUxzwg/zA7Ha6bvQ8EZ8ONsdazgjq0otewO7A==",
+  "dgSpecHash": "iMS+q6qwELXweLqYQtYHbK+1ODtLR5lzdJwop5ww1agyg80nawlmO4vW6pVfrmuhXUNPgEhltHp0raUwmvSTWA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Henri\\source\\repos\\TimeReportApi\\TimeReportApi\\TimeReportApi.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,9 @@
     "C:\\Users\\Henri\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.5\\microsoft.aspnetcore.authentication.jwtbearer.6.0.5.nupkg.sha512",
+    "C:\\Users\\Henri\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.5\\microsoft.aspnetcore.cryptography.internal.6.0.5.nupkg.sha512",
+    "C:\\Users\\Henri\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.5\\microsoft.aspnetcore.cryptography.keyderivation.6.0.5.nupkg.sha512",
+    "C:\\Users\\Henri\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.5\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.5.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
@@ -24,6 +27,8 @@
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0\\microsoft.extensions.dependencyinjection.6.0.0.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.identity.core\\6.0.5\\microsoft.extensions.identity.core.6.0.5.nupkg.sha512",
+    "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.identity.stores\\6.0.5\\microsoft.extensions.identity.stores.6.0.5.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.logging\\6.0.0\\microsoft.extensions.logging.6.0.0.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
