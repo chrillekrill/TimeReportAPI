@@ -1,0 +1,15 @@
+﻿@model TimeReportMvc.Models.CustomerModels.CustomerIndexModel
+
+@{
+    ViewData["Title"] = "All Customers";
+}
+
+<h1>All customers </h1>
+<ul>
+    @foreach (var customer in Model.Customers)
+    {
+        <li>
+            @customer.Name
+        </li>
+    }
+</ul>
