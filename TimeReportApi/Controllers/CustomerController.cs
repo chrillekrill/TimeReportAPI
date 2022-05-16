@@ -9,7 +9,6 @@ namespace TimeReportApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class CustomerController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -20,6 +19,8 @@ public class CustomerController : Controller
         _context = context;
         _mapper = mapper;
     }
+
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public IActionResult Index()
     {
