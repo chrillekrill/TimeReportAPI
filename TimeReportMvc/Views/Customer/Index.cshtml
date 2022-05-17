@@ -9,7 +9,9 @@
     @foreach (var customer in Model.Customers)
     {
         <li>
-            @customer.Name
+            <a asp-controller="Customer" asp-action="CustomerView" asp-route-id="@customer.Id">@customer.Name</a>
         </li>
     }
 </ul>
+
+<a class="btn btn-success" asp-controller="Customer" asp-action="CreateCustomer">Create customer</a>
