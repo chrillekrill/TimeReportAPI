@@ -1,0 +1,18 @@
+﻿@model TimeReportMvc.Models.ProjectModels.ProjectIndexModel;
+
+
+@{
+    ViewData["Title"] = "All Projects";
+}
+
+<h1>All projects </h1>
+<ul>
+    @foreach (var project in Model.Projects)
+    {
+        <li>
+            <a asp-controller="Project" asp-action="ProjectView" asp-route-id="@project.Id">@project.Name</a>
+        </li>
+    }
+</ul>
+
+<a class="btn btn-success" asp-controller="Project" asp-action="CreateProject">Create project</a>
