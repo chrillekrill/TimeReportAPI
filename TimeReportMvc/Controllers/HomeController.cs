@@ -18,7 +18,7 @@ namespace TimeReportMvc.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var user = new UserDto
+            /*var user = new UserDto
             {
                 Username = "Christoffer",
                 Password = "Hejsan123#"
@@ -32,7 +32,7 @@ namespace TimeReportMvc.Controllers
 
             var responseResult = JsonConvert.DeserializeObject<UserJsonDto>(response.Content.ReadAsStringAsync().Result);
 
-            Response.Cookies.Append("UserCookie", responseResult.Jwt, new CookieOptions{HttpOnly = true});
+            Response.Cookies.Append("UserCookie", responseResult.Jwt, new CookieOptions{HttpOnly = true});*/
 
             return View();
         }

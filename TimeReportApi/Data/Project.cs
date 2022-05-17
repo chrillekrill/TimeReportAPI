@@ -1,23 +1,12 @@
-﻿@model TimeReportMvc.Models.CustomerModels.CustomerNewModel
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-@{
-    ViewData["Title"] = "New customer";
+namespace TimeReportApi.Data;
+public class Project
+{
+    public Guid Id { get; set; }
+    [MaxLength(100)]
+    public string Name { get; set; }
+    public List<TimeReport> TimeReports { get; set; } = new List<TimeReport>();
+    public Customer customer { get; set; }
 }
-<div class="card">
-    <div class="card-header">
-        <h1>Create customer</h1>
-    </div>
-    <div class="card-body">
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Name">Namn</label>
-                <input class="form-control" asp-for="Name" />  
-                <span asp-validation-for="Name" class="field-validation-error"></span>
-            </div>
-            
-            <button type="submit" class="btn">Save</button>
-
-        </form>
-
-    </div>
-</div>

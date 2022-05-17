@@ -35,9 +35,9 @@ public class CustomerController : Controller
 
             var data = httpClient.GetStringAsync(_configuration["urls:CustomerApi"]).Result;
             
-            var newModel = JsonConvert.DeserializeObject<List<CustomerModel>>(data);
+            var newModel = JsonConvert.DeserializeObject<List<CustomerIndexModel.CustomerModel>>(data);
             
-            model.Customers = newModel.Select(e => new CustomerModel
+            model.Customers = newModel.Select(e => new CustomerIndexModel.CustomerModel
             {
                 Name = e.Name,
                 Id = e.Id
@@ -79,7 +79,7 @@ public class CustomerController : Controller
     [HttpGet]
     public IActionResult CustomerView(Guid id)
     {
-        var model = new CustomerModel();
+        var model = new CustomerViewModel();
 
         using (var httpClient = new HttpClient())
         {
@@ -91,7 +91,7 @@ public class CustomerController : Controller
 
             var response = httpClient.GetStringAsync($"{_configuration["urls:CustomerApi"]}/{id}").Result;
 
-            model = JsonConvert.DeserializeObject<CustomerModel>(response);
+            model = JsonConvert.DeserializeObject<CustomerViewModel>(response);
         }
         
         return View(model);
