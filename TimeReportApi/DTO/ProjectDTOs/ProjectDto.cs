@@ -5,5 +5,5 @@ public class ProjectDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public List<TimeReportDto> TimeReports { get; set; } = new List<TimeReportDto>();
+    public Guid CustomerId { get; set; }
 }

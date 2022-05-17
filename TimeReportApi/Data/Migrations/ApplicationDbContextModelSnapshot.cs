@@ -242,17 +242,17 @@ namespace TimeReportApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid>("customerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("customerId");
 
                     b.ToTable("Projects");
                 });
@@ -261,9 +261,6 @@ namespace TimeReportApi.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
@@ -277,12 +274,10 @@ namespace TimeReportApi.Migrations
                     b.Property<int>("Minutes")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ProjectId")
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("ProjectId");
 
@@ -342,27 +337,29 @@ namespace TimeReportApi.Migrations
 
             modelBuilder.Entity("TimeReportApi.Data.Project", b =>
                 {
-                    b.HasOne("TimeReportApi.Data.Customer", null)
+                    b.HasOne("TimeReportApi.Data.Customer", "customer")
                         .WithMany("Projects")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("customerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("customer");
                 });
 
             modelBuilder.Entity("TimeReportApi.Data.TimeReport", b =>
                 {
-                    b.HasOne("TimeReportApi.Data.Customer", null)
+                    b.HasOne("TimeReportApi.Data.Project", "Project")
                         .WithMany("TimeReports")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("TimeReportApi.Data.Project", null)
-                        .WithMany("TimeReports")
-                        .HasForeignKey("ProjectId");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("TimeReportApi.Data.Customer", b =>
                 {
                     b.Navigation("Projects");
-
-                    b.Navigation("TimeReports");
                 });
 
             modelBuilder.Entity("TimeReportApi.Data.Project", b =>

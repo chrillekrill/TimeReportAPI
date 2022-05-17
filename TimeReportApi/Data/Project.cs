@@ -8,4 +8,5 @@ public class Project
     [MaxLength(100)]
     public string Name { get; set; }
     public List<TimeReport> TimeReports { get; set; } = new List<TimeReport>();
+    public Customer customer { get; set; }
 }

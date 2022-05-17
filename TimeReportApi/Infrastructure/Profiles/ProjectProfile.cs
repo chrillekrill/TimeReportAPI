@@ -10,9 +10,9 @@ namespace TimeReportApi.Infrastructure.Profiles
         public ProjectProfile()
         {
             CreateMap<Project, ProjectDto>()
-                .ReverseMap();
+                .ForMember(x => x.CustomerId, opt => opt.MapFrom(src => src.customer.Id)).ReverseMap();
             CreateMap<Project, CreateProjectDto>()
-                .ForMember(x => x.CustomerId, opt => opt.Ignore()).ReverseMap();
+                .ForMember(x => x.CustomerId, opt => opt.MapFrom(src => src.customer.Id)).ReverseMap();
             CreateMap<Project, EditProjectDto>()
                 .ReverseMap();
             CreateMap<Project, List<ProjectDto>>()

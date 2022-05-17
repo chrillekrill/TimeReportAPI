@@ -10,8 +10,5 @@ public class ApplicationDbContext : IdentityDbContext
 
     }
 
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Project> Projects { get; set; }
-    public DbSet<TimeReport> TimeReports { get; set; }
     
 }
