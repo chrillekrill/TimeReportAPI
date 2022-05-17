@@ -9968,19 +9968,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Henri\\.nuget\\packages\\": {}
+    "C:\\Users\\Henri\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Henri\\source\\repos\\TimeReportApi\\TimeReportMvc\\TimeReportMvc.csproj",
+      "projectUniqueName": "C:\\Users\\Henri\\source\\repos\\TimeReportAPI\\TimeReportMvc\\TimeReportMvc.csproj",
       "projectName": "TimeReportMvc",
-      "projectPath": "C:\\Users\\Henri\\source\\repos\\TimeReportApi\\TimeReportMvc\\TimeReportMvc.csproj",
+      "projectPath": "C:\\Users\\Henri\\source\\repos\\TimeReportAPI\\TimeReportMvc\\TimeReportMvc.csproj",
       "packagesPath": "C:\\Users\\Henri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Henri\\source\\repos\\TimeReportApi\\TimeReportMvc\\obj\\",
+      "outputPath": "C:\\Users\\Henri\\source\\repos\\TimeReportAPI\\TimeReportMvc\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
         "C:\\Users\\Henri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

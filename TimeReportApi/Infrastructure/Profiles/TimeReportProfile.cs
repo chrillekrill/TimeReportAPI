@@ -9,9 +9,9 @@ public class TimeReportProfile : Profile
     public TimeReportProfile()
     {
         CreateMap<TimeReport, TimeReportDto>()
-            .ReverseMap();
+            .ForMember(x => x.ProjectId, opt => opt.MapFrom(src => src.Project.Id)).ReverseMap();
         CreateMap<TimeReport, CreateTimeReportDto>()
-            .ForMember(x => x.CustomerId, opt => opt.Ignore()).ForMember(x => x.ProjectId, opt => opt.Ignore()).ReverseMap();
+            .ForMember(x => x.ProjectId, opt => opt.MapFrom(src => src.Project.Id)).ReverseMap();
         CreateMap<TimeReport, List<TimeReportDto>>()
             .ReverseMap();
         CreateMap<TimeReport, EditTimeReportDto>()

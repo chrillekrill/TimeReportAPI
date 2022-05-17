@@ -45,7 +45,6 @@ public class CustomerController : Controller
                 Name = e.Name
             }).ToList();
         }
-        
         return View(model);
     }
 }

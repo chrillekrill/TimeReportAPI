@@ -24,7 +24,7 @@ public class CustomerController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(_mapper.Map<List<CustomerDto>>(_context.Customers.Include(cus => cus.Projects).ThenInclude(c => c.TimeReports)));
+        return Ok(_mapper.Map<List<CustomerDto>>(_context.Customers));
     }
     [HttpPost]
     [Authorize(Roles = "Admin")]
@@ -45,7 +45,7 @@ public class CustomerController : Controller
     [Route("{id}")]
     public IActionResult GetOne(string id)
     {
-        var customer = _context.Customers.Include(cus => cus.Projects).FirstOrDefault(cust => cust.Id.ToString() == id);
+        var customer = _context.Customers.FirstOrDefault(cust => cust.Id.ToString() == id);
         if(customer == null) return NotFound("No customer found");
 
         var customerToReturn = _mapper.Map<CustomerDto>(customer);

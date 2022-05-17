@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/VnKhJ8/H20+bdKhJCffpRiDKpVY1SG5LxKXxcaBUVRqy1ZRtKKaofjIAuY1uT3PWZ8384h9u+JwboLWE2HpiA==",
+  "dgSpecHash": "qZOo2bATluV2dteTzI/R5KmOJUyIljV3WGW81IPFNMOGv97+utI0W0Ger7KEirZoYgWku19286sEQn6+0jcASQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Henri\\source\\repos\\TimeReportApi\\TimeReportMvc\\TimeReportMvc.csproj",
+  "projectFilePath": "C:\\Users\\Henri\\source\\repos\\TimeReportAPI\\TimeReportMvc\\TimeReportMvc.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Henri\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",

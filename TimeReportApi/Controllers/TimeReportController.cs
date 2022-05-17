@@ -24,22 +24,21 @@ public class TimeReportController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(_mapper.Map<List<TimeReportDto>>(_context.TimeReports));
+        return Ok(_mapper.Map<List<TimeReportDto>>(_context.TimeReports.Include(p => p.Project)));
     }
     [HttpPost]
     public IActionResult Create(CreateTimeReportDto timeReport)
     {
         var newTimeReport = _mapper.Map<TimeReport>(timeReport);
 
-        var customer = _context.Customers.Include(cus => cus.Projects).ThenInclude(proj => proj.TimeReports).First(c => c.Id.ToString() == timeReport.CustomerId);
+        //var customer = _context.Customers.Include(cus => cus.Projects).ThenInclude(proj => proj.TimeReports).First(c => c.Id == timeReport.CustomerId);
 
-        //var project = _context.Projects.FirstOrDefault(p => p.Id.ToString() == timeReport.ProjectId);
-        //if (project == null) return NotFound("Project not found");
+        var project = _context.Projects.FirstOrDefault(p => p.Id == timeReport.ProjectId);
+        if (project == null) return NotFound("Project not found");
 
-        //project.TimeReports.Add(newTimeReport);
+        project.TimeReports.Add(newTimeReport);
             
-        customer.Projects.First(p => p.Id.ToString() == timeReport.ProjectId).TimeReports.Add(newTimeReport);
-        customer.TimeReports.Add(newTimeReport);
+        //customer.Projects.First(p => p.Id == timeReport.ProjectId).TimeReports.Add(newTimeReport);
 
         _context.SaveChanges();
 
@@ -52,17 +51,7 @@ public class TimeReportController : Controller
     [Route("{id}")]
     public IActionResult GetOne(string id)
     {
-        Guid guidId;
-        try
-        {
-            guidId = Guid.Parse(id);
-        }
-        catch
-        {
-            return NotFound("No time report found");
-        }
-
-        var timeReport = _context.TimeReports.FirstOrDefault(rep => rep.Id == guidId);
+        var timeReport = _context.TimeReports.Include(p => p.Project).FirstOrDefault(rep => rep.Id.ToString() == id);
         if (timeReport == null) return NotFound("No time report found");
 
         var timeReportToReturn = _mapper.Map<TimeReportDto>(timeReport);

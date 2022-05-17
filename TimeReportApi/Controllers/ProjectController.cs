@@ -23,7 +23,7 @@ public class ProjectController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(_mapper.Map<List<ProjectDto>>(_context.Projects.Include(p => p.TimeReports)));
+        return Ok(_mapper.Map<List<ProjectDto>>(_context.Projects.Include(c => c.customer)));
     }
 
     [HttpPost]
@@ -47,7 +47,7 @@ public class ProjectController : Controller
     [Route("{id}")]
     public IActionResult GetOne(string id)
     {
-        var project = _context.Projects.FirstOrDefault(proj => proj.Id.ToString() == id);
+        var project = _context.Projects.Include(c => c.customer).FirstOrDefault(proj => proj.Id.ToString() == id);
         if (project == null) return NotFound("No project found");
 
         var projectToReturn = _mapper.Map<ProjectDto>(project);
