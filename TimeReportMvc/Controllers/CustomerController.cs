@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,13 +47,13 @@ public class CustomerController : Controller
         return View(model);
     }
     [HttpGet]
-    public IActionResult CreateCustomer() //OnGet
+    public IActionResult CustomerCreate() //OnGet
     {
         var model = new CustomerNewModel();
         return View(model);
     }
     [HttpPost]
-    public async Task<IActionResult> CreateCustomer(CustomerNewModel newCustomer)
+    public async Task<IActionResult> CustomerCreate(CustomerNewModel newCustomer)
     {
         if (ModelState.IsValid)
         {
@@ -95,5 +96,55 @@ public class CustomerController : Controller
         }
         
         return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult CustomerEdit(Guid id)
+    {
+        var model = new CustomerEditModel();
+//        model.CustomerId = id;
+        using (var httpClient = new HttpClient())
+        {
+            var accessToken = Request.Cookies["UserCookie"];
+                
+            httpClient.BaseAddress = new Uri($"{_configuration["urls:CustomerApi"]}/{id}");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+            var response = httpClient.GetStringAsync($"{_configuration["urls:CustomerApi"]}/{id}").Result;
+
+            model = JsonConvert.DeserializeObject<CustomerEditModel>(response);
+        }
+
+        model.CustomerId = id;
+        
+        return View(model); 
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CustomerEdit(CustomerEditModel editCustomer)
+    {
+        if (ModelState.IsValid)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var accessToken = Request.Cookies["UserCookie"];
+                
+                httpClient.BaseAddress = new Uri($"{_configuration["urls:CustomerApi"]}/{editCustomer.CustomerId}");
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+                //var json = JsonConvert.SerializeObject(editCustomer);
+
+                await httpClient.PutAsJsonAsync($"{_configuration["urls:CustomerApi"]}/{editCustomer.CustomerId}", new
+                {
+                   editCustomer.Name 
+                });
+                
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        return NoContent();
     }
 }
