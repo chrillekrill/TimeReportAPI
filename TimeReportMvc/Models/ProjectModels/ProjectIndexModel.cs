@@ -2,7 +2,7 @@
 
 public class ProjectIndexModel
 {
-    public List<ProjectModel> Projects { get; set; }
+    public List<ProjectModel> Projects { get; set; } = new List<ProjectModel>();
 
     public class ProjectModel
     {

@@ -15,7 +15,7 @@ public class ProjectController : Controller
         _configuration = configuration;
     }
 
-    private CustomerViewModel getCustomerFromProjectId(Guid id)
+    private CustomerViewModel GetCustomerFromProjectId(Guid id)
     {
         using (var httpClient = new HttpClient())
         {
@@ -74,7 +74,7 @@ public class ProjectController : Controller
 
             model = JsonConvert.DeserializeObject<ProjectViewModel>(response);
             
-            model.Customer = getCustomerFromProjectId(model.CustomerId);
+            model.Customer = GetCustomerFromProjectId(model.CustomerId);
         }
         
         return View(model);
@@ -130,6 +130,56 @@ public class ProjectController : Controller
                 {
                     return NoContent();
                 }
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        return NoContent();
+    }
+    
+    [HttpGet]
+    public IActionResult ProjectEdit(Guid id)
+    {
+        var model = new ProjectEditModel();
+//        model.CustomerId = id;
+        using (var httpClient = new HttpClient())
+        {
+            var accessToken = Request.Cookies["UserCookie"];
+                
+            httpClient.BaseAddress = new Uri($"{_configuration["urls:ProjectApi"]}/{id}");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+            var response = httpClient.GetStringAsync($"{_configuration["urls:ProjectApi"]}/{id}").Result;
+
+            model = JsonConvert.DeserializeObject<ProjectEditModel>(response);
+        }
+
+        model.ProjectId = id;
+        
+        return View(model); 
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ProjectEdit(ProjectEditModel editProject)
+    {
+        if (ModelState.IsValid)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var accessToken = Request.Cookies["UserCookie"];
+                
+                httpClient.BaseAddress = new Uri($"{_configuration["urls:ProjectApi"]}/{editProject.ProjectId}");
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+                //var json = JsonConvert.SerializeObject(editCustomer);
+
+                await httpClient.PutAsJsonAsync($"{_configuration["urls:ProjectApi"]}/{editProject.ProjectId}", new
+                {
+                    editProject.Name 
+                });
+                
                 return RedirectToAction(nameof(Index));
             }
         }

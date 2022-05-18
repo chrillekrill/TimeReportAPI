@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Newtonsoft.Json;
 using TimeReportMvc.Data;
 using TimeReportMvc.Models.CustomerModels;
+using TimeReportMvc.Models.ProjectModels;
 
 namespace TimeReportMvc.Controllers;
 
@@ -20,6 +21,24 @@ public class CustomerController : Controller
     {
         _userManager = userManager;
         _configuration = configuration;
+    }
+    private List<ProjectIndexModel.ProjectModel> GetProjectsFromCustomerId(Guid id)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            var accessToken = Request.Cookies["UserCookie"];
+            
+            httpClient.BaseAddress = new Uri($"{_configuration["urls:ProjectApi"]}/customer/{id}");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+            
+            var response = httpClient.GetStringAsync($"{_configuration["urls:ProjectApi"]}/customer/{id}").Result;
+            
+
+            var projects = JsonConvert.DeserializeObject<List<ProjectIndexModel.ProjectModel>>(response);
+
+            return projects;
+        }
     }
     // GET
     public IActionResult Index()
@@ -93,6 +112,9 @@ public class CustomerController : Controller
             var response = httpClient.GetStringAsync($"{_configuration["urls:CustomerApi"]}/{id}").Result;
 
             model = JsonConvert.DeserializeObject<CustomerViewModel>(response);
+            var projects = GetProjectsFromCustomerId(model.Id);
+
+            model.Projects = projects;
         }
         
         return View(model);
