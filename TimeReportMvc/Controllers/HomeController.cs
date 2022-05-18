@@ -1,51 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using Newtonsoft.Json;
-using TimeReportMvc.DTO.UserDTOs;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using TimeReportMvc.Models;
 
-namespace TimeReportMvc.Controllers
+namespace TimeReportMvc.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ILogger<HomeController> _logger;
+
+    public HomeController(ILogger<HomeController> logger)
     {
-        private readonly ILogger<HomeController> _logger;
+        _logger = logger;
+    }
 
-        public HomeController(ILogger<HomeController> logger)
+    public async Task<IActionResult> Index()
+    {
+        /*var user = new UserDto
         {
-            _logger = logger;
-        }
+            Username = "Christoffer",
+            Password = "Hejsan123#"
+        };
 
-        public async Task<IActionResult> Index()
-        {
+        var url = "https://localhost:8080/user/login";
 
-            /*var user = new UserDto
-            {
-                Username = "Christoffer",
-                Password = "Hejsan123#"
-            };
+        HttpClient httpClient = new HttpClient();
 
-            var url = "https://localhost:8080/user/login";
+        var response = await httpClient.PostAsJsonAsync(url, user);
 
-            HttpClient httpClient = new HttpClient();
+        var responseResult = JsonConvert.DeserializeObject<UserJsonDto>(response.Content.ReadAsStringAsync().Result);
 
-            var response = await httpClient.PostAsJsonAsync(url, user);
+        Response.Cookies.Append("UserCookie", responseResult.Jwt, new CookieOptions{HttpOnly = true});*/
 
-            var responseResult = JsonConvert.DeserializeObject<UserJsonDto>(response.Content.ReadAsStringAsync().Result);
+        return View();
+    }
 
-            Response.Cookies.Append("UserCookie", responseResult.Jwt, new CookieOptions{HttpOnly = true});*/
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

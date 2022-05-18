@@ -21,11 +21,13 @@ public class TimeReportController : Controller
         _context = context;
         _mapper = mapper;
     }
+
     [HttpGet]
     public IActionResult Index()
     {
         return Ok(_mapper.Map<List<TimeReportDto>>(_context.TimeReports.Include(p => p.Project)));
     }
+
     [HttpPost]
     public IActionResult Create(CreateTimeReportDto timeReport)
     {
@@ -37,7 +39,7 @@ public class TimeReportController : Controller
         if (project == null) return NotFound("Project not found");
 
         project.TimeReports.Add(newTimeReport);
-            
+
         //customer.Projects.First(p => p.Id == timeReport.ProjectId).TimeReports.Add(newTimeReport);
 
         _context.SaveChanges();
@@ -73,14 +75,14 @@ public class TimeReportController : Controller
 
         return Ok(timeReportToReturn);
     }
-    
+
     [HttpPut]
     [Route("{id}")]
     public IActionResult EditTimeReport(string id, EditTimeReportDto editedTimeReport)
     {
         var timeReport = _context.TimeReports.FirstOrDefault(t => t.Id.ToString() == id);
         if (timeReport == null) return NotFound("No time report found");
-            
+
         _mapper.Map(editedTimeReport, timeReport);
 
         _context.SaveChanges();
@@ -89,14 +91,14 @@ public class TimeReportController : Controller
 
         return Ok(timeReportToReturn);
     }
-    
+
     [HttpDelete]
     [Route("{id}")]
     public IActionResult DeleteTimeReport(string id)
     {
         var timeReport = _context.TimeReports.FirstOrDefault(t => t.Id.ToString() == id);
 
-        if(timeReport == null) return NotFound("No time report found");
+        if (timeReport == null) return NotFound("No time report found");
 
         _context.TimeReports.Remove(timeReport);
 

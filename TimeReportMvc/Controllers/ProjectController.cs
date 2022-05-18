@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using TimeReportMvc.Models.CustomerModels;
@@ -20,16 +21,17 @@ public class ProjectController : Controller
         using (var httpClient = new HttpClient())
         {
             var accessToken = Request.Cookies["UserCookie"];
-            
+
             httpClient.BaseAddress = new Uri($"{_configuration["urls:CustomerApi"]}/{id}");
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
-            
+
             var response = httpClient.GetStringAsync($"{_configuration["urls:CustomerApi"]}/{id}").Result;
 
             return JsonConvert.DeserializeObject<CustomerViewModel>(response);
         }
     }
+
     // GET
     public IActionResult Index()
     {
@@ -38,25 +40,25 @@ public class ProjectController : Controller
         using (var httpClient = new HttpClient())
         {
             var accessToken = Request.Cookies["UserCookie"];
-            
+
             httpClient.BaseAddress = new Uri(_configuration["urls:ProjectApi"]);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
             var data = httpClient.GetStringAsync(_configuration["urls:ProjectApi"]).Result;
-            
+
             var newModel = JsonConvert.DeserializeObject<List<ProjectIndexModel.ProjectModel>>(data);
-            
+
             model.Projects = newModel.Select(e => new ProjectIndexModel.ProjectModel
             {
                 Id = e.Id,
                 Name = e.Name
             }).ToList();
         }
-        
+
         return View(model);
     }
-    
+
     [HttpGet]
     public IActionResult ProjectView(Guid id)
     {
@@ -65,7 +67,7 @@ public class ProjectController : Controller
         using (var httpClient = new HttpClient())
         {
             var accessToken = Request.Cookies["UserCookie"];
-                
+
             httpClient.BaseAddress = new Uri($"{_configuration["urls:ProjectApi"]}/{id}");
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
@@ -73,27 +75,28 @@ public class ProjectController : Controller
             var response = httpClient.GetStringAsync($"{_configuration["urls:ProjectApi"]}/{id}").Result;
 
             model = JsonConvert.DeserializeObject<ProjectViewModel>(response);
-            
+
             model.Customer = GetCustomerFromProjectId(model.CustomerId);
         }
-        
+
         return View(model);
     }
+
     [HttpGet]
-    public IActionResult CreateProject()
+    public IActionResult ProjectCreate()
     {
         var model = new ProjectNewModel();
-        
+
         using (var httpClient = new HttpClient())
         {
             var accessToken = Request.Cookies["UserCookie"];
-            
+
             httpClient.BaseAddress = new Uri(_configuration["urls:CustomerApi"]);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
             var data = httpClient.GetStringAsync(_configuration["urls:CustomerApi"]).Result;
-            
+
             var newModel = JsonConvert.DeserializeObject<List<CustomerViewModel>>(data);
 
             model.AllCustomers = newModel.Select(cus => new SelectListItem
@@ -112,31 +115,26 @@ public class ProjectController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProject(ProjectNewModel newProject)
+    public async Task<IActionResult> ProjectCreate(ProjectNewModel newProject)
     {
         if (ModelState.IsValid)
-        {
             using (var httpClient = new HttpClient())
             {
                 var accessToken = Request.Cookies["UserCookie"];
-                
+
                 httpClient.BaseAddress = new Uri(_configuration["urls:ProjectApi"]);
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
-                
+
                 var response = await httpClient.PostAsJsonAsync(_configuration["urls:ProjectApi"], newProject);
 
-                if (response.StatusCode != System.Net.HttpStatusCode.Created)
-                {
-                    return NoContent();
-                }
+                if (response.StatusCode != HttpStatusCode.Created) return NoContent();
                 return RedirectToAction(nameof(Index));
             }
-        }
 
         return NoContent();
     }
-    
+
     [HttpGet]
     public IActionResult ProjectEdit(Guid id)
     {
@@ -145,7 +143,7 @@ public class ProjectController : Controller
         using (var httpClient = new HttpClient())
         {
             var accessToken = Request.Cookies["UserCookie"];
-                
+
             httpClient.BaseAddress = new Uri($"{_configuration["urls:ProjectApi"]}/{id}");
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
@@ -156,19 +154,18 @@ public class ProjectController : Controller
         }
 
         model.ProjectId = id;
-        
-        return View(model); 
+
+        return View(model);
     }
 
     [HttpPost]
     public async Task<IActionResult> ProjectEdit(ProjectEditModel editProject)
     {
         if (ModelState.IsValid)
-        {
             using (var httpClient = new HttpClient())
             {
                 var accessToken = Request.Cookies["UserCookie"];
-                
+
                 httpClient.BaseAddress = new Uri($"{_configuration["urls:ProjectApi"]}/{editProject.ProjectId}");
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
@@ -177,12 +174,11 @@ public class ProjectController : Controller
 
                 await httpClient.PutAsJsonAsync($"{_configuration["urls:ProjectApi"]}/{editProject.ProjectId}", new
                 {
-                    editProject.Name 
+                    editProject.Name
                 });
-                
+
                 return RedirectToAction(nameof(Index));
             }
-        }
 
         return NoContent();
     }

@@ -1,21 +1,20 @@
-﻿using TimeReportApi.DTO.CustomerDTOs;
-using AutoMapper;
+﻿using AutoMapper;
 using TimeReportApi.Data;
+using TimeReportApi.DTO.CustomerDTOs;
 
-namespace TimeReportApi.Infrastructure.Profiles
+namespace TimeReportApi.Infrastructure.Profiles;
+
+public class CustomerProfile : Profile
 {
-    public class CustomerProfile : Profile
+    public CustomerProfile()
     {
-        public CustomerProfile()
-        {
-            CreateMap<Customer, CustomerDto>()
-                .ReverseMap();
-            CreateMap<Customer, CreateCustomerDto>()
-                .ReverseMap();
-            CreateMap<Customer, EditCustomerDto>()
-                .ReverseMap();
-            CreateMap<Customer, List<CustomerDto>>()
-                .ReverseMap();
-        }
+        CreateMap<Customer, CustomerDto>()
+            .ReverseMap();
+        CreateMap<Customer, CreateCustomerDto>()
+            .ReverseMap();
+        CreateMap<Customer, EditCustomerDto>()
+            .ReverseMap();
+        CreateMap<Customer, List<CustomerDto>>()
+            .ReverseMap();
     }
 }

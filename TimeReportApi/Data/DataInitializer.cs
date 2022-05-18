@@ -13,12 +13,14 @@ public class DataInitializer
         _context = context;
         _userManager = userManager;
     }
+
     public void SeedData()
     {
         _context.Database.Migrate();
         SeedRoles();
         SeedUser();
     }
+
     private void CreateRoleIfNotExists(string rolename)
     {
         if (_context.Roles.Any(e => e.Name == rolename))
@@ -29,21 +31,21 @@ public class DataInitializer
 
     private void SeedUser()
     {
-        CreateUserIfNotExist("Stefan","Hejsan123#","Admin");
+        CreateUserIfNotExist("Stefan", "Hejsan123#", "Admin");
     }
 
     private void CreateUserIfNotExist(string name, string password, string role)
     {
         if (_userManager.FindByEmailAsync(name + "@gmail.com").Result != null) return;
 
-            var user = new IdentityUser
-            {
-                UserName = name,
-                Email = name + "@gmail.com",
-                EmailConfirmed = true
-            };
-            _userManager.CreateAsync(user, password).Wait();
-            _userManager.AddToRoleAsync(user, role).Wait();
+        var user = new IdentityUser
+        {
+            UserName = name,
+            Email = name + "@gmail.com",
+            EmailConfirmed = true
+        };
+        _userManager.CreateAsync(user, password).Wait();
+        _userManager.AddToRoleAsync(user, role).Wait();
     }
 
     private void SeedRoles()

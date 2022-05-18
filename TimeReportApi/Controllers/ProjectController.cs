@@ -20,6 +20,7 @@ public class ProjectController : Controller
         _context = context;
         _mapper = mapper;
     }
+
     [HttpGet]
     public IActionResult Index()
     {
@@ -42,7 +43,7 @@ public class ProjectController : Controller
 
         return CreatedAtAction(nameof(GetOne), new { id = projectDto.Id }, projectDto);
     }
-         
+
     [HttpGet]
     [Route("{id}")]
     public IActionResult GetOne(string id)
@@ -54,14 +55,14 @@ public class ProjectController : Controller
 
         return Ok(projectToReturn);
     }
-        
+
     [HttpPut]
     [Route("{id}")]
     public IActionResult EditProject(string id, EditProjectDto editedProject)
     {
         var project = _context.Projects.FirstOrDefault(proj => proj.Id.ToString() == id);
         if (project == null) return NotFound("No project found");
-            
+
         _mapper.Map(editedProject, project);
 
         _context.SaveChanges();
@@ -70,7 +71,7 @@ public class ProjectController : Controller
 
         return Ok(projectToReturn);
     }
-    
+
     [HttpGet]
     [Route("customer/{id}")]
     public IActionResult GetAllProjectReports(string id)
@@ -85,13 +86,14 @@ public class ProjectController : Controller
 
         return Ok(projects);
     }
+
     [HttpDelete]
     [Route("{id}")]
     public IActionResult DeleteProject(string id)
     {
         var project = _context.Projects.FirstOrDefault(proj => proj.Id.ToString() == id);
 
-        if(project == null) return NotFound("No project found");
+        if (project == null) return NotFound("No project found");
 
         _context.Projects.Remove(project);
 
