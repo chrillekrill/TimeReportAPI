@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "V9kFsyKI06OxVPISEQBG/0woq9NdDXbi0wvqJ4avt8THd6i9NtY7w+XExUSNnoVQAbgZ+lgW6D5/hBWhaCbS9Q==",
+  "dgSpecHash": "Jm8AATKaf2jfF1B1uqYa7PJJNvRlqDUS/ZWW8C/BkeziLrdck/33VVqho9cf1PKWjs6S/ysaIOoYXmjihhfeSg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Henri\\source\\repos\\TimeReportAPI\\TimeReportApi\\TimeReportApi.csproj",
+  "projectFilePath": "C:\\Users\\Henri\\source\\repos\\TimeReportApi\\TimeReportApi\\TimeReportApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Henri\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\Henri\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

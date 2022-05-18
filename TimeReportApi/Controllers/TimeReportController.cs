@@ -48,6 +48,21 @@ public class TimeReportController : Controller
     }
 
     [HttpGet]
+    [Route("project/{id}")]
+    public IActionResult GetAllProjectReports(string id)
+    {
+        var reports = new List<TimeReportDto>();
+
+        var project = _context.Projects.Include(t => t.TimeReports).FirstOrDefault(p => p.Id.ToString() == id);
+
+        if (project == null) return NotFound("Project not found");
+
+        reports = _mapper.Map<List<TimeReportDto>>(project.TimeReports);
+
+        return Ok(reports);
+    }
+
+    [HttpGet]
     [Route("{id}")]
     public IActionResult GetOne(string id)
     {
