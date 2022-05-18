@@ -22,7 +22,8 @@ builder.Services.AddIdentityCore<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddTransient<DataInitializer>();
-builder.Services.AddAutoMapper(typeof(CustomerProfile),typeof(ProjectProfile),typeof(TimeReportProfile),typeof(UserProfile));
+builder.Services.AddAutoMapper(typeof(CustomerProfile), typeof(ProjectProfile), typeof(TimeReportProfile),
+    typeof(UserProfile));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

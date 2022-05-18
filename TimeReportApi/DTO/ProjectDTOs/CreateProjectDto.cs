@@ -1,7 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using TimeReportApi.DTO.CustomerDTOs;
+﻿namespace TimeReportApi.DTO.ProjectDTOs;
 
-namespace TimeReportApi.DTO.ProjectDTOs;
 public class CreateProjectDto
 {
     public string Name { get; set; }

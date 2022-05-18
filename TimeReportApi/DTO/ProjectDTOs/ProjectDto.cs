@@ -1,6 +1,5 @@
-﻿using TimeReportApi.DTO.TimeReportDTOs;
+﻿namespace TimeReportApi.DTO.ProjectDTOs;
 
-namespace TimeReportApi.DTO.ProjectDTOs;
 public class ProjectDto
 {
     public Guid Id { get; set; }

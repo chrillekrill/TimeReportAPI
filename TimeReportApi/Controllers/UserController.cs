@@ -1,6 +1,4 @@
-﻿using System.CodeDom.Compiler;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Security;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
@@ -12,14 +10,15 @@ using TimeReportApi.Data;
 using TimeReportApi.DTO.UserDTOs;
 
 namespace TimeReportApi.Controllers;
+
 [Route("[controller]")]
 [ApiController]
 public class UserController : Controller
 {
     private readonly IConfiguration _configuration;
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public UserController(IConfiguration configuration, UserManager<IdentityUser> userManager,
         ApplicationDbContext context, IMapper mapper)
@@ -34,7 +33,8 @@ public class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateUserDto newUser)
     {
-        if (_userManager.FindByEmailAsync(newUser.Username + "@gmail.com").Result != null) return Problem("User already exists");
+        if (_userManager.FindByEmailAsync(newUser.Username + "@gmail.com").Result != null)
+            return Problem("User already exists");
 
         var user = new IdentityUser
         {
@@ -42,7 +42,7 @@ public class UserController : Controller
             Email = newUser.Username + "@gmail.com",
             EmailConfirmed = true
         };
-        
+
         _userManager.CreateAsync(user, newUser.Password).Wait();
         _userManager.AddToRoleAsync(user, newUser.Role).Wait();
 
@@ -50,7 +50,7 @@ public class UserController : Controller
 
         return Ok("User created");
     }
-    
+
     [AllowAnonymous]
     [HttpPost]
     [Route("login")]
@@ -65,7 +65,7 @@ public class UserController : Controller
             var returnUser = _mapper.Map<UserDto>(userLogin);
 
             returnUser.Jwt = token;
-            
+
             return Ok(returnUser);
         }
 
@@ -78,9 +78,8 @@ public class UserController : Controller
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var userRole = _userManager.GetRolesAsync(user).Result;
-        
-        
-        
+
+
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserName),
@@ -104,10 +103,7 @@ public class UserController : Controller
         // var currentUser = Users.UserLogins.FirstOrDefault(u =>
         //     u.Username.ToLower() == userLogin.Username.ToLower() && u.Password == userLogin.Password);
 
-        if (currentUser != null)
-        {
-            return currentUser;
-        }
+        if (currentUser != null) return currentUser;
 
         return null;
     }

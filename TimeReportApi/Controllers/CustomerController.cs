@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TimeReportApi.Data;
 using TimeReportApi.DTO.CustomerDTOs;
 
@@ -26,6 +25,7 @@ public class CustomerController : Controller
     {
         return Ok(_mapper.Map<List<CustomerDto>>(_context.Customers));
     }
+
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public IActionResult Create(CreateCustomerDto customer)
@@ -46,12 +46,13 @@ public class CustomerController : Controller
     public IActionResult GetOne(string id)
     {
         var customer = _context.Customers.FirstOrDefault(cust => cust.Id.ToString() == id);
-        if(customer == null) return NotFound("No customer found");
+        if (customer == null) return NotFound("No customer found");
 
         var customerToReturn = _mapper.Map<CustomerDto>(customer);
 
         return Ok(customerToReturn);
     }
+
     [HttpPut]
     [Route("{id}")]
     [Authorize(Roles = "Admin")]
@@ -68,6 +69,7 @@ public class CustomerController : Controller
 
         return Ok(customerToReturn);
     }
+
     [HttpDelete]
     [Route("{id}")]
     [Authorize(Roles = "Admin")]
@@ -75,7 +77,7 @@ public class CustomerController : Controller
     {
         var customer = _context.Customers.FirstOrDefault(cust => cust.Id.ToString() == id);
 
-        if(customer == null) return NotFound("No customer found");
+        if (customer == null) return NotFound("No customer found");
 
         _context.Customers.Remove(customer);
 
