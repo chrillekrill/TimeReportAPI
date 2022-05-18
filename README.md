@@ -1,9 +1,9 @@
 # Time report system
 
-A school project with a API.NET web api
+A school project with an API.NET web api, MVC and react(in progress)
 
 # API
-The API is a restful API built in ASP.NET web api that uses JWT for authentication and is connected with EF core to SQL database
+The API is a restful API built in ASP.NET core 6 web api that uses JWT for authentication and is connected with EF core to SQL database
 <hr />
 
 # MVC
