@@ -8,4 +8,18 @@
     <h1>@Model.Name</h1>
 </div>
 
+@if (Model.Projects.Count > 0)
+{
+    <h1>Customer projects</h1>
+
+    <ul>
+        @foreach (var project in Model.Projects)
+        {
+            <li>
+                @project.Name
+            </li>
+        }
+    </ul>
+}
+
 <a asp-controller="Customer" asp-action="CustomerEdit" asp-route-id="@Model.Id">Edit customer</a>

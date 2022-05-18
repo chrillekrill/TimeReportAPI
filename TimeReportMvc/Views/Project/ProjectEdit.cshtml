@@ -1,17 +1,17 @@
-﻿@model TimeReportMvc.Models.CustomerModels.CustomerEditModel
+﻿@model TimeReportMvc.Models.ProjectModels.ProjectEditModel
 
 @{
     ViewData["Title"] = @Model.Name;
 }
 <div class="card">
     <div class="card-header">
-        <h1>Edit customer</h1>
+        <h1>Edit project</h1>
     </div>
     <div class="card-body">
         <form method="post">
-            <input asp-for="CustomerId" type="hidden"/>
+            <input asp-for="ProjectId" type="hidden"/>
             <div class="form-group">
-                <label asp-for="Name">Customer name</label>
+                <label asp-for="Name">Project name</label>
                 <input class="form-control" asp-for="Name"/>
                 <span asp-validation-for="Name" class="field-validation-error"></span>
             </div>

@@ -70,6 +70,21 @@ public class ProjectController : Controller
 
         return Ok(projectToReturn);
     }
+    
+    [HttpGet]
+    [Route("customer/{id}")]
+    public IActionResult GetAllProjectReports(string id)
+    {
+        var projects = new List<ProjectDto>();
+
+        var customer = _context.Customers.Include(t => t.Projects).FirstOrDefault(p => p.Id.ToString() == id);
+
+        if (customer == null) return NotFound("Project not found");
+
+        projects = _mapper.Map<List<ProjectDto>>(customer.Projects);
+
+        return Ok(projects);
+    }
     [HttpDelete]
     [Route("{id}")]
     public IActionResult DeleteProject(string id)
