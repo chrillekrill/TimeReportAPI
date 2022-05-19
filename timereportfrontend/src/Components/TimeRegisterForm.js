@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { fetchCustomers, fetchProjects, postTimeRegister } from './Data/TimeRegisterData';
+import { toast } from 'react-toastify';
 
 export const TimeRegisterForm = () => {
   const [projects, setProjects] = useState([])
@@ -8,7 +9,7 @@ export const TimeRegisterForm = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null)
   const [minutes, setMinutes] = useState(0)
   const [description, setDescription] = useState("")
-
+  const notify = () => toast("Report registered")
   useEffect(()=>{
     fetchCustomers().then(result => {
       setCustomers(result)
@@ -37,6 +38,7 @@ export const TimeRegisterForm = () => {
       if(result.status == 201) {
         setDescription("")
         setMinutes(0)
+        notify();
       } else if(result.status == 400) {
         result.text().then(data => {
           window.alert(data)

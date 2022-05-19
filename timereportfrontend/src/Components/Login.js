@@ -1,11 +1,15 @@
 import React, { useState, useEffect} from 'react'
 import Cookies from 'universal-cookie';
 import {fetchLogin} from './Data/LoginData'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const Login = ({loggedInStatus}) => {
+export const Login = ({loggedInStatus,}) => {
     const [user, setUser] = useState({});
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const notify = (name) => toast("Welcome " + name)
 
     const LoginButton = () => {
 
@@ -17,6 +21,8 @@ export const Login = ({loggedInStatus}) => {
                     "username": result.username,
                     "jwt": result.jwt
                 }
+
+                notify(localstorageItem.username);
                 localStorage.setItem("user", JSON.stringify(localstorageItem))
                 
                 const cookies = new Cookies();

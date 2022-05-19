@@ -1,12 +1,14 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using TimeReportMvc.Models.CustomerModels;
 using TimeReportMvc.Models.ProjectModels;
+using TimeReportMvc.Models.TimeReportModels;
 
 namespace TimeReportMvc.Controllers;
-
+[Authorize(Roles = "Admin")]
 public class ProjectController : Controller
 {
     private readonly IConfiguration _configuration;
@@ -75,11 +77,30 @@ public class ProjectController : Controller
             var response = httpClient.GetStringAsync($"{_configuration["urls:ProjectApi"]}/{id}").Result;
 
             model = JsonConvert.DeserializeObject<ProjectViewModel>(response);
+            model.TimeReports = getTimeReportsFromId(id);
 
             model.Customer = GetCustomerFromProjectId(model.CustomerId);
         }
 
         return View(model);
+    }
+
+    private List<TimeReportIndexModel.TimeReportModel> getTimeReportsFromId(Guid id)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            var accessToken = Request.Cookies["UserCookie"];
+
+            httpClient.BaseAddress = new Uri($"{_configuration["urls:TimeReportApi"]}/project/{id}");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+            var response = httpClient.GetStringAsync($"{_configuration["urls:TimeReportApi"]}/project/{id}").Result;
+            
+            var timeReports = JsonConvert.DeserializeObject<List<TimeReportIndexModel.TimeReportModel>>(response);
+
+            return timeReports;
+        }
     }
 
     [HttpGet]
