@@ -68,6 +68,23 @@ public class CustomerController : Controller
         return View(model);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> CustomerDelete(Guid id)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            var accessToken = Request.Cookies["UserCookie"];
+            
+            httpClient.BaseAddress = new Uri($"{_configuration["urls:CustomerApi"]}/{id}");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+            await httpClient.DeleteAsync($"{_configuration["urls:CustomerApi"]}/{id}");
+            
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
     [HttpGet]
     public IActionResult CustomerCreate() //OnGet
     {
