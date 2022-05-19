@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TimeReportApi.Data;
 using TimeReportApi.DTO.ProjectDTOs;
 using TimeReportApi.DTO.TimeReportDTOs;
@@ -31,6 +32,15 @@ public class TimeReportController : Controller
     [HttpPost]
     public IActionResult Create(CreateTimeReportDto timeReport)
     {
+        if (timeReport.Description.IsNullOrEmpty())
+        {
+            return BadRequest("description is empty");
+        }
+
+        if (timeReport.Minutes <= 0)
+        {
+            return BadRequest("Please enter a valid number in the minutes field");
+        }
         var newTimeReport = _mapper.Map<TimeReport>(timeReport);
         newTimeReport.Date = DateTime.Now;
         var project = _context.Projects.FirstOrDefault(p => p.Id == timeReport.ProjectId);
