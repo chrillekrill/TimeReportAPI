@@ -32,15 +32,11 @@ public class TimeReportController : Controller
     public IActionResult Create(CreateTimeReportDto timeReport)
     {
         var newTimeReport = _mapper.Map<TimeReport>(timeReport);
-
-        //var customer = _context.Customers.Include(cus => cus.Projects).ThenInclude(proj => proj.TimeReports).First(c => c.Id == timeReport.CustomerId);
-
+        newTimeReport.Date = DateTime.Now;
         var project = _context.Projects.FirstOrDefault(p => p.Id == timeReport.ProjectId);
         if (project == null) return NotFound("Project not found");
 
         project.TimeReports.Add(newTimeReport);
-
-        //customer.Projects.First(p => p.Id == timeReport.ProjectId).TimeReports.Add(newTimeReport);
 
         _context.SaveChanges();
 
