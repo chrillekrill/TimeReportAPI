@@ -44,8 +44,8 @@ export const postTimeRegister = async (data) => {
     }
 
     const response = await fetch(registerUrl, fetchOptionsPost) 
-    const json = await response.status;
-    
+    const json = await response;
+ 
     return(json)
 }
 
