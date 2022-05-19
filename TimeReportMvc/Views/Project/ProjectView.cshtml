@@ -13,4 +13,7 @@
     <h1>@Model.Name</h1>
 </div>
 
-<a asp-controller="Project" asp-action="ProjectEdit" asp-route-id="@Model.Id">Edit project</a>
+<a class="btn btn-success" asp-controller="Project" asp-action="ProjectEdit" asp-route-id="@Model.Id">Edit project</a>
+<form method="post" asp-controller="Project" asp-action="ProjectDelete" asp-route-id="@Model.Id">
+    <button class="btn btn-danger" type="submit">Delete project</button>
+</form>
