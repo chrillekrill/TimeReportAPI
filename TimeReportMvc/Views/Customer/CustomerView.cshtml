@@ -22,4 +22,8 @@
     </ul>
 }
 
-<a asp-controller="Customer" asp-action="CustomerEdit" asp-route-id="@Model.Id">Edit customer</a>
+<a class="btn btn-success" asp-controller="Customer" asp-action="CustomerEdit" asp-route-id="@Model.Id">Edit customer</a>
+<form method="post" asp-controller="Customer" asp-action="CustomerDelete" asp-route-id="@Model.Id">
+    <button class="btn btn-danger" type="submit">Delete customer</button>
+</form>
+@* <a class="btn btn-danger" asp-controller="Customer" asp-action="CustomerDelete" asp-route-id="@Model.Id">Delete customer</a> *@
