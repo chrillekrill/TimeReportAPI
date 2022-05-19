@@ -34,11 +34,13 @@ export const TimeRegisterForm = () => {
     }
 
     postTimeRegister(data).then(result => {
-      if(result == 201) {
+      if(result.status == 201) {
         setDescription("")
         setMinutes(0)
-      } else {
-        window.alert("something went wrong")
+      } else if(result.status == 400) {
+        result.text().then(data => {
+          window.alert(data)
+        })
       }
     })
     
