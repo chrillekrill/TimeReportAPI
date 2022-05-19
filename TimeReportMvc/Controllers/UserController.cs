@@ -1,9 +1,10 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeReportMvc.Models.UserModel;
 
 namespace TimeReportMvc.Controllers;
-
+[Authorize(Roles = "Admin")]
 public class UserController : Controller
 {
     private readonly IConfiguration _configuration;

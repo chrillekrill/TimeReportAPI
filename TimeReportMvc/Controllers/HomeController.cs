@@ -15,22 +15,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        /*var user = new UserDto
-        {
-            Username = "Christoffer",
-            Password = "Hejsan123#"
-        };
-
-        var url = "https://localhost:8080/user/login";
-
-        HttpClient httpClient = new HttpClient();
-
-        var response = await httpClient.PostAsJsonAsync(url, user);
-
-        var responseResult = JsonConvert.DeserializeObject<UserJsonDto>(response.Content.ReadAsStringAsync().Result);
-
-        Response.Cookies.Append("UserCookie", responseResult.Jwt, new CookieOptions{HttpOnly = true});*/
-
         return View();
     }
 
