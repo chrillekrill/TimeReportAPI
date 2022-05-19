@@ -134,6 +134,22 @@ public class ProjectController : Controller
 
         return NoContent();
     }
+    [HttpPost]
+    public async Task<IActionResult> ProjectDelete(Guid id)
+    {
+        using (var httpClient = new HttpClient())
+        {
+            var accessToken = Request.Cookies["UserCookie"];
+            
+            httpClient.BaseAddress = new Uri($"{_configuration["urls:ProjectApi"]}/{id}");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+
+            await httpClient.DeleteAsync($"{_configuration["urls:ProjectApi"]}/{id}");
+            
+            return RedirectToAction(nameof(Index));
+        }
+    }
 
     [HttpGet]
     public IActionResult ProjectEdit(Guid id)
