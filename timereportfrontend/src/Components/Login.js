@@ -10,6 +10,7 @@ export const Login = ({loggedInStatus,}) => {
     const [password, setPassword] = useState("");
 
     const notify = (name) => toast("Welcome " + name)
+    const notifyError = () => toast("Username or password is invalid")
 
     const LoginButton = () => {
 
@@ -28,7 +29,7 @@ export const Login = ({loggedInStatus,}) => {
                 const cookies = new Cookies();
                 cookies.set('usertoken', result.jwt);
             }).catch(error => {
-                console.log(error)
+                notifyError()
             })
     }
 

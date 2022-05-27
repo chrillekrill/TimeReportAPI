@@ -20,7 +20,6 @@
                 <label asp-for="CustomerId">Customer</label>
                 <select class="form-control" asp-for="CustomerId" asp-items="@Model.AllCustomers">
                 </select>
-                <span asp-validation-for="CustomerId" class="field-validation-error"></span>
             </div>
 
             <button type="submit" class="btn">Save</button>

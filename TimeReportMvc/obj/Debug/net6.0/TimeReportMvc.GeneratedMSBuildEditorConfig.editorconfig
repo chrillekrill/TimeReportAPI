@@ -11,7 +11,7 @@ build_property.RootNamespace = TimeReportMvc
 build_property.ProjectDir = C:\Users\Henri\source\repos\TimeReportApi\TimeReportMvc\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
-build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = C:\Users\Henri\source\repos\TimeReportApi\TimeReportMvc
 build_property._RazorSourceGeneratorDebug = 
 
@@ -223,8 +223,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Henri/source/repos/TimeReportApi/TimeReportMvc/Views/User/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
+[C:/Users/Henri/source/repos/TimeReportApi/TimeReportMvc/Views/User/UserCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxVc2VyQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Henri/source/repos/TimeReportApi/TimeReportMvc/Views/_ViewImports.cshtml]
