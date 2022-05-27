@@ -30,18 +30,23 @@ public class ProjectController : Controller
     [HttpPost]
     public IActionResult Create(CreateProjectDto project)
     {
-        var newProject = _mapper.Map<Project>(project);
+        if (ModelState.IsValid)
+        {
+            var newProject = _mapper.Map<Project>(project);
 
-        var customer = _context.Customers.FirstOrDefault(cus => cus.Id.ToString() == project.CustomerId);
-        if (customer == null) return NotFound("Customer not found");
+            var customer = _context.Customers.FirstOrDefault(cus => cus.Id.ToString() == project.CustomerId);
+            if (customer == null) return NotFound("Customer not found");
 
-        customer.Projects.Add(newProject);
+            customer.Projects.Add(newProject);
 
-        _context.SaveChanges();
+            _context.SaveChanges();
 
-        var projectDto = _mapper.Map<ProjectDto>(newProject);
+            var projectDto = _mapper.Map<ProjectDto>(newProject);
 
-        return CreatedAtAction(nameof(GetOne), new { id = projectDto.Id }, projectDto);
+            return CreatedAtAction(nameof(GetOne), new { id = projectDto.Id }, projectDto);
+        }
+
+        return BadRequest();
     }
 
     [HttpGet]
@@ -60,16 +65,21 @@ public class ProjectController : Controller
     [Route("{id}")]
     public IActionResult EditProject(string id, EditProjectDto editedProject)
     {
-        var project = _context.Projects.FirstOrDefault(proj => proj.Id.ToString() == id);
-        if (project == null) return NotFound("No project found");
+        if (ModelState.IsValid)
+        {
+            var project = _context.Projects.FirstOrDefault(proj => proj.Id.ToString() == id);
+            if (project == null) return NotFound("No project found");
 
-        _mapper.Map(editedProject, project);
+            _mapper.Map(editedProject, project);
 
-        _context.SaveChanges();
+            _context.SaveChanges();
 
-        var projectToReturn = _mapper.Map<ProjectDto>(project);
+            var projectToReturn = _mapper.Map<ProjectDto>(project);
 
-        return Ok(projectToReturn);
+            return Ok(projectToReturn);
+        }
+
+        return BadRequest();
     }
 
     [HttpGet]

@@ -32,27 +32,32 @@ public class TimeReportController : Controller
     [HttpPost]
     public IActionResult Create(CreateTimeReportDto timeReport)
     {
-        if (timeReport.Description.IsNullOrEmpty())
+        if (ModelState.IsValid)
         {
-            return BadRequest("description is empty");
+            if (timeReport.Description.IsNullOrEmpty())
+            {
+                return BadRequest("description is empty");
+            }
+
+            if (timeReport.Minutes <= 0)
+            {
+                return BadRequest("Please enter a valid number in the minutes field");
+            }
+            var newTimeReport = _mapper.Map<TimeReport>(timeReport);
+            newTimeReport.Date = DateTime.Now;
+            var project = _context.Projects.FirstOrDefault(p => p.Id == timeReport.ProjectId);
+            if (project == null) return NotFound("Project not found");
+
+            project.TimeReports.Add(newTimeReport);
+
+            _context.SaveChanges();
+
+            var timeReportDto = _mapper.Map<TimeReportDto>(newTimeReport);
+
+            return CreatedAtAction(nameof(GetOne), new { id = timeReportDto.Id }, timeReportDto);
         }
 
-        if (timeReport.Minutes <= 0)
-        {
-            return BadRequest("Please enter a valid number in the minutes field");
-        }
-        var newTimeReport = _mapper.Map<TimeReport>(timeReport);
-        newTimeReport.Date = DateTime.Now;
-        var project = _context.Projects.FirstOrDefault(p => p.Id == timeReport.ProjectId);
-        if (project == null) return NotFound("Project not found");
-
-        project.TimeReports.Add(newTimeReport);
-
-        _context.SaveChanges();
-
-        var timeReportDto = _mapper.Map<TimeReportDto>(newTimeReport);
-
-        return CreatedAtAction(nameof(GetOne), new { id = timeReportDto.Id }, timeReportDto);
+        return NotFound();
     }
 
     [HttpGet]
@@ -86,16 +91,21 @@ public class TimeReportController : Controller
     [Route("{id}")]
     public IActionResult EditTimeReport(string id, EditTimeReportDto editedTimeReport)
     {
-        var timeReport = _context.TimeReports.FirstOrDefault(t => t.Id.ToString() == id);
-        if (timeReport == null) return NotFound("No time report found");
+        if (ModelState.IsValid)
+        {
+            var timeReport = _context.TimeReports.FirstOrDefault(t => t.Id.ToString() == id);
+            if (timeReport == null) return NotFound("No time report found");
 
-        _mapper.Map(editedTimeReport, timeReport);
+            _mapper.Map(editedTimeReport, timeReport);
 
-        _context.SaveChanges();
+            _context.SaveChanges();
 
-        var timeReportToReturn = _mapper.Map<ProjectDto>(timeReport);
+            var timeReportToReturn = _mapper.Map<ProjectDto>(timeReport);
 
-        return Ok(timeReportToReturn);
+            return Ok(timeReportToReturn);
+        }
+
+        return BadRequest();
     }
 
     [HttpDelete]

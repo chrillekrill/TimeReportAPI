@@ -30,15 +30,19 @@ public class CustomerController : Controller
     [Authorize(Roles = "Admin")]
     public IActionResult Create(CreateCustomerDto customer)
     {
-        var newCustomer = _mapper.Map<Customer>(customer);
+        if (ModelState.IsValid)
+        {
+            var newCustomer = _mapper.Map<Customer>(customer);
 
-        _context.Customers.Add(newCustomer);
+            _context.Customers.Add(newCustomer);
 
-        _context.SaveChanges();
+            _context.SaveChanges();
 
-        var customerDto = _mapper.Map<CustomerDto>(newCustomer);
+            var customerDto = _mapper.Map<CustomerDto>(newCustomer);
 
-        return CreatedAtAction(nameof(GetOne), new { id = customerDto.Id }, customerDto);
+            return CreatedAtAction(nameof(GetOne), new { id = customerDto.Id }, customerDto);
+        }
+        return BadRequest();
     }
 
     [HttpGet]

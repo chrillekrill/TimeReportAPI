@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,26 +30,39 @@ public class UserController : Controller
         _mapper = mapper;
     }
 
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateUserDto newUser)
     {
-        if (_userManager.FindByEmailAsync(newUser.Username + "@gmail.com").Result != null)
-            return Problem("User already exists");
-
-        var user = new IdentityUser
+        if (ModelState.IsValid)
         {
-            UserName = newUser.Username,
-            Email = newUser.Username + "@gmail.com",
-            EmailConfirmed = true
-        };
+            var passWordCheck = newUser.Password.Any(x => char.IsLetter(x));
+            if (_userManager.FindByEmailAsync(newUser.Username + "@gmail.com").Result != null)
+                return BadRequest("User already exists");
+            if (!Regex.IsMatch(newUser.Username, @"^[a-zA-Z]+$"))
+                return BadRequest("Please enter a valid username");
+            if (!passWordCheck)
+                return BadRequest("Password must contain letters");
 
-        _userManager.CreateAsync(user, newUser.Password).Wait();
-        _userManager.AddToRoleAsync(user, newUser.Role).Wait();
 
-        _context.SaveChanges();
 
-        return Ok("User created");
+
+            var user = new IdentityUser
+            {
+                UserName = newUser.Username,
+                Email = newUser.Username + "@gmail.com",
+                EmailConfirmed = true
+            };
+
+            _userManager.CreateAsync(user, newUser.Password).Wait();
+            _userManager.AddToRoleAsync(user, newUser.Role).Wait();
+
+            _context.SaveChanges();
+
+            return Ok("User created");
+        }
+
+        return BadRequest("Something went wrong");
     }
 
     [AllowAnonymous]
@@ -69,7 +83,7 @@ public class UserController : Controller
             return Ok(returnUser);
         }
 
-        return NotFound("User not found");
+        return NotFound("Username or password is incorrect");
     }
 
     private string Generate(IdentityUser user)

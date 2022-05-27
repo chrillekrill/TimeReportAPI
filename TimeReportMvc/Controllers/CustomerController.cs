@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using TimeReportMvc.Data;
+using NToastNotify;
 using TimeReportMvc.Models.CustomerModels;
 using TimeReportMvc.Models.ProjectModels;
 
@@ -13,13 +13,12 @@ namespace TimeReportMvc.Controllers;
 public class CustomerController : Controller
 {
     private readonly IConfiguration _configuration;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IToastNotification _toastNotification;
 
-    public CustomerController(ApplicationDbContext context, UserManager<IdentityUser> userManager,
-        IConfiguration configuration)
+    public CustomerController(IConfiguration configuration, IToastNotification toastNotification)
     {
-        _userManager = userManager;
         _configuration = configuration;
+        _toastNotification = toastNotification;
     }
 
     private List<ProjectIndexModel.ProjectModel> GetProjectsFromCustomerId(Guid id)
@@ -80,7 +79,8 @@ public class CustomerController : Controller
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
             await httpClient.DeleteAsync($"{_configuration["urls:CustomerApi"]}/{id}");
-            
+
+            _toastNotification.AddSuccessToastMessage("Customer deleted");
             return RedirectToAction(nameof(Index));
         }
     }
@@ -107,9 +107,16 @@ public class CustomerController : Controller
                 var response = await httpClient.PostAsJsonAsync(_configuration["urls:CustomerApi"], newCustomer);
 
                 if (response.StatusCode != HttpStatusCode.Created) return NoContent();
+
+                _toastNotification.AddSuccessToastMessage("Customer created");
                 return RedirectToAction(nameof(Index));
             }
 
+        if (newCustomer.Name == null)
+        {
+            _toastNotification.AddErrorToastMessage("Please write a name for the customer");
+            return View();
+        }
         return NoContent();
     }
 
@@ -179,9 +186,10 @@ public class CustomerController : Controller
                     editCustomer.Name
                 });
 
-                return RedirectToAction(nameof(Index));
+                _toastNotification.AddSuccessToastMessage("Customer edited. New name is " + editCustomer.Name);
+                return RedirectToAction(nameof(CustomerView), new { id = editCustomer.CustomerId});
             }
-
-        return NoContent();
+        _toastNotification.AddErrorToastMessage("Please write a valid name");
+        return View(editCustomer);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using NToastNotify;
 using TimeReportMvc.Models.CustomerModels;
 using TimeReportMvc.Models.ProjectModels;
 using TimeReportMvc.Models.TimeReportModels;
@@ -12,10 +13,12 @@ namespace TimeReportMvc.Controllers;
 public class ProjectController : Controller
 {
     private readonly IConfiguration _configuration;
+    private readonly IToastNotification _toastNotification;
 
-    public ProjectController(IConfiguration configuration)
+    public ProjectController(IConfiguration configuration, IToastNotification toastNotification)
     {
         _configuration = configuration;
+        _toastNotification = toastNotification;
     }
 
     private CustomerViewModel GetCustomerFromProjectId(Guid id)
@@ -103,11 +106,9 @@ public class ProjectController : Controller
         }
     }
 
-    [HttpGet]
-    public IActionResult ProjectCreate()
+    private ProjectNewModel setProjectInfo()
     {
         var model = new ProjectNewModel();
-
         using (var httpClient = new HttpClient())
         {
             var accessToken = Request.Cookies["UserCookie"];
@@ -132,7 +133,12 @@ public class ProjectController : Controller
             });
         }
 
-        return View(model);
+        return model;
+    }
+    [HttpGet]
+    public IActionResult ProjectCreate()
+    {
+        return View(setProjectInfo());
     }
 
     [HttpPost]
@@ -150,10 +156,18 @@ public class ProjectController : Controller
                 var response = await httpClient.PostAsJsonAsync(_configuration["urls:ProjectApi"], newProject);
 
                 if (response.StatusCode != HttpStatusCode.Created) return NoContent();
+
+                _toastNotification.AddSuccessToastMessage("Project created");
                 return RedirectToAction(nameof(Index));
             }
 
-        return NoContent();
+        if (newProject.CustomerId == Guid.Empty)
+        {
+            _toastNotification.AddErrorToastMessage("Please select a customer");
+            return View(setProjectInfo());
+        }
+
+        return View(setProjectInfo());
     }
     [HttpPost]
     public async Task<IActionResult> ProjectDelete(Guid id)
@@ -167,7 +181,7 @@ public class ProjectController : Controller
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
             await httpClient.DeleteAsync($"{_configuration["urls:ProjectApi"]}/{id}");
-            
+            _toastNotification.AddSuccessToastMessage("Project deleted");
             return RedirectToAction(nameof(Index));
         }
     }
@@ -213,10 +227,10 @@ public class ProjectController : Controller
                 {
                     editProject.Name
                 });
-
-                return RedirectToAction(nameof(Index));
+                _toastNotification.AddSuccessToastMessage("Project edited. New name is " + editProject.Name);
+                return RedirectToAction(nameof(ProjectView), new { id = editProject.ProjectId});
             }
-
-        return NoContent();
+        _toastNotification.AddErrorToastMessage("Please write a valid name");
+        return View();
     }
 }
